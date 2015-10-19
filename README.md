@@ -1,4 +1,4 @@
-# Debian Jessie Docker host
+# Orion on Debian Jessie Docker host
 
 Setup for a Debian Jessie Docker host machine.
 
