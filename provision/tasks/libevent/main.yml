@@ -1,0 +1,24 @@
+- name: Download libevent
+  get_url:
+   url: "{{libevent_tarball_url}}"
+   dest: "{{tmp_directory}}/{{libevent_version}}.tar.gz"
+   mode: 0440
+
+- name: Creates libevent directory
+  file:
+   path: "{{tmp_directory}}/{{libevent_version}}"
+   state: directory
+   mode: 0775
+   recurse: yes
+
+- name: Extract libevent source tarball
+  unarchive: src={{tmp_directory}}/{{libevent_version}}.tar.gz dest={{tmp_directory}} copy=no
+
+- name: Configure libevent
+  command: "chdir={{ tmp_directory }}/{{ libevent_version }} ./configure --prefix={{ dest_directory }}/{{ libevent_name }}"
+
+- name: Make libevent
+  command: "chdir={{ tmp_directory }}/{{ libevent_version }} make"
+
+- name: Make install libevent
+  command: "chdir={{ tmp_directory }}/{{ libevent_version }} make install"
