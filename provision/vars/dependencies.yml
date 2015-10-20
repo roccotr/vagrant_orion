@@ -1,7 +1,19 @@
-tmp_directory: "/tmp"
-dest_directory: "/opt"
+tmp_dir: "/tmp"
+dest_dir: "/opt"
+
+# Libevent
+# Version of Libevent 2.0.21
 libevent_version: "libevent-2.0.21-stable"
-libevent_name: "libevent"
-libevent_tarball_url: "https://github.com/downloads/libevent/libevent/{{ libevent_version }}.tar.gz"
-libevent_file: "{{ libevent_version }}.tar.gz"
-libevent_tarball_sha256sum: "22a530a8a5ba1cb9c080cba033206b17dacd21437762155c6d30ee6469f574f5"
+libevent_work_dir: "{{ tmp_dir }}/libevent"
+libevent_prefix: "{{ dest_dir }}/libevent"
+libevent_tarball_name: "{{ libevent_version }}.tar.gz"
+libevent_tarball_url: "https://github.com/downloads/libevent/libevent/{{ libevent_tarball_name }}"
+
+# Boost
+# Version of Boost  1.55.0
+boost_version: "1.55.0"
+boost_build_dir: "boost_{{ boost_version.replace('.', '_') }}"
+boost_tarball_name: "{{ boost_build_dir }}.tar.bz2"
+boost_tarball_url: "http://downloads.sourceforge.net/project/boost/boost/{{ boost_version }}/{{ boost_tarball_name  }}"
+boost_prefix: "{{ dest_dir }}/boost"
+boost_work_dir: "{{ tmp_dir }}/boost"

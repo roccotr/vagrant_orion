@@ -126,3 +126,4 @@
         path: /usr/local/bin/rocker-compose
         mode: 0755
     - include: tasks/libevent/main.yml
+    - include: tasks/boost/main.yml
