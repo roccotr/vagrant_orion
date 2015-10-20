@@ -1,0 +1,46 @@
+---
+
+- name: Install dependencies
+  apt: name={{ item }} state=installed update_cache=yes
+  sudo: yes
+  with_items:
+    - autoconf
+    - libtool
+  when: ansible_os_family == "Debian"
+
+- name: Download gperftools
+  get_url:
+   url: "{{ gperftools_tarball_url }}"
+   dest: "{{tmp_dir}}/{{ gperftools_tarball_name }}"
+   mode: 0440
+
+- name: Creates gperftools directory
+  file:
+   path: "{{ gperftools_work_dir }}"
+   state: directory
+   mode: 0775
+   owner: "vagrant"
+   group: "vagrant"
+   recurse: yes
+
+- name: Unpack gperftools
+  unarchive:
+    src: "{{ tmp_dir }}/{{ gperftools_tarball_name }}"
+    dest: "{{ gperftools_work_dir }}"
+    copy: no
+
+- name: Autoconf gperftools
+  command: "chdir={{ gperftools_work_dir }}/gperftools-{{ gperftools_build_dir }} ./autogen.sh"
+  register: "gperftools_config"
+- debug: "var=gperftools_config"
+
+- name: Configure gperftools
+  command: "chdir={{ gperftools_work_dir }}/gperftools-{{ gperftools_build_dir }} ./configure --prefix={{ gperftools_prefix }} --enable-frame-pointers"
+  register: "gperftools_config"
+- debug: "var=gperftools_config"
+
+- name: Make gperftools
+  command: "chdir={{ gperftools_work_dir }}/gperftools-{{ gperftools_build_dir }} make"
+
+- name: Make install gperftools
+  command: "chdir={{ gperftools_work_dir }}/gperftools-{{ gperftools_build_dir }} make install"

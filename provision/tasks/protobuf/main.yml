@@ -1,0 +1,38 @@
+---
+
+- name: Download protobuf
+  get_url:
+   url: "{{ protobuf_tarball_url }}"
+   dest: "{{tmp_dir}}/{{ protobuf_tarball_name }}"
+   mode: 0440
+
+- name: Creates protobuf directory
+  file:
+   path: "{{ protobuf_work_dir }}"
+   state: directory
+   mode: 0775
+   owner: "vagrant"
+   group: "vagrant"
+   recurse: yes
+
+- name: Unpack protobuf
+  unarchive:
+    src: "{{ tmp_dir }}/{{ protobuf_tarball_name }}"
+    dest: "{{ protobuf_work_dir }}"
+    copy: no
+
+- name: Autoconf protobuf
+  command: "chdir={{ protobuf_work_dir }}/{{ protobuf_build_dir }} ./autogen.sh"
+  register: "protobuf_config"
+- debug: "var=protobuf_config"
+
+- name: Configure protobuf
+  command: "chdir={{ protobuf_work_dir }}/{{ protobuf_build_dir }} ./configure --prefix={{ protobuf_prefix }}"
+  register: "protobuf_config"
+- debug: "var=protobuf_config"
+
+- name: Make protobuf
+  command: "chdir={{ protobuf_work_dir }}/{{ protobuf_build_dir }} make"
+
+- name: Make install protobuf
+  command: "chdir={{ protobuf_work_dir }}/{{ protobuf_build_dir }} make install"

@@ -125,5 +125,13 @@
       file:
         path: /usr/local/bin/rocker-compose
         mode: 0755
-    - include: tasks/libevent/main.yml
-    - include: tasks/boost/main.yml
+    #- include: tasks/libevent/main.yml
+    #- include: tasks/boost/main.yml
+    #- include: tasks/snappy/main.yml
+    #  tags:
+    #   - snappy
+    #- include: tasks/gperftools/main.yml
+    #  tags:
+    #   - gperftools
+    #- include: tasks/protobuf/main.yml
+    - include: tasks/re2/main.yml

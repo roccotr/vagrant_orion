@@ -1,0 +1,29 @@
+- name: Download snappy
+  get_url:
+   url: "{{ snappy_tarball_url }}"
+   dest: "{{tmp_dir}}/{{ snappy_tarball_name }}"
+   mode: 0440
+
+- name: Creates snappy directory
+  file:
+   path: "{{ snappy_work_dir }}"
+   state: directory
+   mode: 0775
+   recurse: yes
+
+- name: Unpack snappy
+  unarchive:
+    src: "{{ tmp_dir }}/{{ snappy_tarball_name }}"
+    dest: "{{ snappy_work_dir }}"
+    copy: no
+
+- name: Configure snappy
+  command: "chdir={{ snappy_work_dir }}/{{ snappy_build_dir }} ./configure --prefix={{ snappy_prefix }}"
+  register: "snappy_config"
+- debug: "var=snappy_config"
+
+- name: Make snappy
+  command: "chdir={{ snappy_work_dir }}/{{ snappy_build_dir }} make"
+
+- name: Make install snappy
+  command: "chdir={{ snappy_work_dir }}/{{ snappy_build_dir }} make install"
