@@ -1,3 +1,4 @@
 .DS_Store
 .vagrant
 vagrant.yml
+vagrant@*

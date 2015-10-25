@@ -1,0 +1,30 @@
+---
+
+- name: Install | Ensure protobuf source downloaded
+  git: repo={{ protobuf_download_location }} dest={{ ansible_cache_dir }}/protobuf-{{ protobuf_version }} version={{ protobuf_version }}
+  register: 'protobuf_download'
+  sudo: yes
+
+- name: Install | Ensure protobuf configured
+  shell: chdir={{ansible_cache_dir}}/protobuf-{{protobuf_version}} ./autogen.sh
+  sudo: yes
+  when: 'protobuf_download.changed'
+  register: 'protobuf'
+
+- name: Install | Ensure protobuf configured
+  shell: chdir={{ansible_cache_dir}}/protobuf-{{protobuf_version}} ./configure --prefix={{user_binaries}}/protobuf
+  sudo: yes
+  when: 'protobuf_download.changed'
+  register: 'protobuf'
+
+- debug: "var=protobuf"
+
+- name: Install | Ensure protobuf make'd
+  shell: chdir={{ansible_cache_dir}}/protobuf-{{protobuf_version}} make
+  sudo: yes
+  when: 'protobuf_download.changed'
+
+- name: Install | Ensure protobuf installed
+  shell: chdir={{ansible_cache_dir}}/protobuf-{{protobuf_version}} make install creates={{user_binaries}}/protobuf
+  sudo: yes
+  when: 'protobuf_download.changed'

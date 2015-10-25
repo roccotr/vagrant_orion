@@ -1,0 +1,36 @@
+---
+
+- name: Install | Ensure gflags source downloaded
+  git: repo={{ gflags_download_location }} dest={{ ansible_cache_dir }}/gflags-{{ gflags_version }} version={{ gflags_version }}
+  register: 'gflags_download'
+  sudo: yes
+
+- name: Install | Creates gflags directory
+  file:
+   path: "{{ ansible_cache_dir }}/gflags-{{ gflags_version }}/build"
+   state: directory
+   recurse: yes
+
+- name: Install | Ensure gflags cmake
+  shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build cmake -DCMAKE_INSTALL_PREFIX={{user_binaries}}/gflags ..
+  sudo: yes
+  when: 'gflags_download.changed'
+  register: 'gflags'
+
+#- name: Install | Ensure gflags configured
+#  shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build ./configure --prefix={{user_binaries}}/gflags
+#  sudo: yes
+#  when: 'gflags_download.changed'
+#  register: 'gflags'
+
+- debug: "var=gflags"
+
+- name: Install | Ensure gflags make'd
+  shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build make
+  sudo: yes
+  when: 'gflags_download.changed'
+
+- name: Install | Ensure gflags installed
+  shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build make install creates={{user_binaries}}/gflags
+  sudo: yes
+  when: 'gflags_download.changed'

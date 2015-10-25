@@ -1,0 +1,33 @@
+---
+    - name: Update apt cache
+      apt: update-cache=yes cache_valid_time=86400
+      sudo: yes
+
+    - name: Update all packages
+      apt: upgrade=dist
+      sudo: yes
+
+    - name: install basic packages
+      sudo: yes
+      apt: pkg={{ item }} state=latest
+      tags: [packages]
+      with_items:
+        - curl
+        - vim
+        - zip
+        - unzip
+        - python-dev
+        #- python-psycopg2
+        #- apg
+        #- mercurial
+        - git
+        - libssl-dev
+        - libxslt1-dev
+        - libxml2-dev
+        - libboost-dev
+        - libevent-2.0-5
+        - libevent-dev
+
+    - name: Ensure that ansible_cache_dir directory exists
+      file: path={{ ansible_cache_dir }} state=directory
+      sudo: yes

@@ -1,0 +1,30 @@
+---
+
+- name: Install | Ensure Boost source downloaded
+  git: repo={{ libevent_download_location }} dest={{ ansible_cache_dir }}/libevent-{{ libevent_version }} version={{ libevent_version }}
+  register: 'boost_download'
+  sudo: yes
+
+- name: Install | Ensure Libevent autogen
+  shell: chdir={{ ansible_cache_dir }}/libevent-{{ libevent_version }} ./autogen.sh
+  sudo: yes
+  when: 'boost_download.changed'
+  register: 'libevent_configure'
+
+- name: Install | Ensure Libevent configured
+  shell: chdir={{ ansible_cache_dir }}/libevent-{{ libevent_version }} ./configure 
+  sudo: yes
+  when: 'boost_download.changed'
+  register: 'libevent_configure'
+
+- debug: "var=libevent_configure"
+
+- name: Install | Ensure Libevent make'd
+  shell: chdir={{ ansible_cache_dir }}/libevent-{{ libevent_version }} make
+  when: 'boost_download.changed'
+  sudo: yes
+
+- name: Install | Ensure Libevent installed
+  shell: chdir={{ ansible_cache_dir }}/libevent-{{ libevent_version }} make install creates={{ user_binaries }}/libevent
+  when: 'boost_download.changed'
+  sudo: yes

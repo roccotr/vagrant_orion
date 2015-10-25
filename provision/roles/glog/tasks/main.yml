@@ -1,0 +1,24 @@
+---
+
+- name: Install | Ensure glog source downloaded
+  git: repo={{ glog_download_location }} dest={{ ansible_cache_dir }}/glog-{{ glog_version }} version={{ glog_version }}
+  register: 'glog_download'
+  sudo: yes
+
+- name: Install | Ensure glog configured
+  shell: chdir={{ansible_cache_dir}}/glog-{{glog_version}} ./configure --prefix={{user_binaries}}/glog
+  sudo: yes
+  when: 'glog_download.changed'
+  register: 'glog'
+
+- debug: "var=glog"
+
+- name: Install | Ensure glog make'd
+  shell: chdir={{ansible_cache_dir}}/glog-{{glog_version}} make
+  sudo: yes
+  when: 'glog_download.changed'
+
+- name: Install | Ensure glog installed
+  shell: chdir={{ansible_cache_dir}}/glog-{{glog_version}} make install creates={{user_binaries}}/glog
+  sudo: yes
+  when: 'glog_download.changed'

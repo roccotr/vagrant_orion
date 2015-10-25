@@ -1,0 +1,30 @@
+---
+
+- name: Install | Ensure gperftools source downloaded
+  git: repo={{ gperftools_download_location }} dest={{ ansible_cache_dir }}/gperftools-{{ gperftools_version }} version={{ gperftools_version }}
+  register: 'gperftools_download'
+  sudo: yes
+
+- name: Install | Ensure gperftools configured
+  shell: chdir={{ansible_cache_dir}}/gperftools-{{gperftools_version}} ./autogen.sh
+  sudo: yes
+  when: 'gperftools_download.changed'
+  register: 'gperftools'
+
+- name: Install | Ensure gperftools configured
+  shell: chdir={{ansible_cache_dir}}/gperftools-{{gperftools_version}} ./configure --prefix={{user_binaries}}/gperftools --enable-frame-pointers
+  sudo: yes
+  when: 'gperftools_download.changed'
+  register: 'gperftools'
+
+- debug: "var=gperftools"
+
+- name: Install | Ensure gperftools make'd
+  shell: chdir={{ansible_cache_dir}}/gperftools-{{gperftools_version}} make
+  sudo: yes
+  when: 'gperftools_download.changed'
+
+- name: Install | Ensure gperftools installed
+  shell: chdir={{ansible_cache_dir}}/gperftools-{{gperftools_version}} make install creates={{user_binaries}}/gperftools
+  sudo: yes
+  when: 'gperftools_download.changed'

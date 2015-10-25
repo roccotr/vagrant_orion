@@ -1,0 +1,4 @@
+---
+
+#thrift_download_location: "https://github.com/apache/thrift.git"
+thrift_download_location: https://git-wip-us.apache.org/repos/asf/thrift.git

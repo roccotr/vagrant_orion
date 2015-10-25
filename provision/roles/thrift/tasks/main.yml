@@ -1,0 +1,52 @@
+---
+- name: Dependencies | Ensure packages for building Thrift installed
+  sudo: yes
+  apt: pkg={{ item }} state=installed
+  tags:
+    - packages
+    - thrift
+  with_items:
+    - make
+    #- libboost-dev
+    #- libboost-test-dev
+    #- libboost-program-options-dev
+    #- thrift-dev
+    - build-essential
+    - python-dev
+    - autoconf
+    - automake
+    - libtool
+    - flex
+    - bison
+    - pkg-config
+    - g++
+    - libssl-dev
+
+- name: Install | Ensure Thrift source downloaded
+  git: repo={{ thrift_download_location }} dest={{ ansible_cache_dir }}/thrift-{{ thrift_version }} version={{ thrift_version }}
+  register: 'thrift_download'
+  sudo: yes
+
+- name: Install | Ensure Thrift configured
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./bootstrap.sh
+  sudo: yes
+  when: 'thrift_download.changed'
+  register: 'thrift'
+
+- name: Install | Ensure Thrift configured
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure --with-boost=/opt/boost -with-libevent=/opt/libevent
+  sudo: yes
+  when: 'thrift_download.changed'
+  register: 'thrift'
+
+- debug: "var=thrift"
+
+- name: Install | Ensure Thrift make'd
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} make
+  sudo: yes
+  when: 'thrift_download.changed'
+
+- name: Install | Ensure Thrift installed
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} make install creates={{user_binaries}}/thrift
+  sudo: yes
+  when: 'thrift_download.changed'

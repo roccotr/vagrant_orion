@@ -8,10 +8,24 @@
     - rocker_compose_version: 0.1.1
     # Default values
     - use_proxy: no
-  vars_files:
-    - vars/dependencies.yml
-  #roles:
-  #  - role: libevent
+    - tmp_dir: /tmp
+    - opt_dir: /opt
+    - ansible_cache_dir: "{{tmp_dir}}/ansible"
+    - software_install_dir: "{{ tmp_dir }}"
+    - user_binaries: "{{ opt_dir }}"
+  #vars_files:
+    #- vars/dependencies.yml
+  roles:
+    - base
+    #- role: libevent
+    #- role: boost
+    - role: thrift
+    - role: snappy
+    - role: gflags
+    - role: glog
+    - role: protobuf
+    - role: gperftools
+    #- role: orion
   tasks:
     - name: Setup proxy for Ansible tasks
       set_fact:
@@ -39,6 +53,7 @@
         - zip
         - unzip
         - tar
+        - cmake
     - name: Check Docker installed
       stat: path=/usr/bin/docker
       register: docker_bin
@@ -134,4 +149,7 @@
     #  tags:
     #   - gperftools
     #- include: tasks/protobuf/main.yml
-    - include: tasks/re2/main.yml
+    #- include: tasks/re2/main.yml
+    #- include: tasks/gflags/main.yml
+    #- include: tasks/glog/main.yml
+    #- include: tasks/thrift/main.yml

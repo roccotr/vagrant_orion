@@ -1,0 +1,30 @@
+---
+
+- name: Install | Ensure Snappy source downloaded
+  git: repo={{ snappy_download_location }} dest={{ ansible_cache_dir }}/snappy-{{ snappy_version }} version={{ snappy_version }}
+  register: 'snappy_download'
+  sudo: yes
+
+- name: Install | Ensure Snappy configured
+  shell: chdir={{ansible_cache_dir}}/snappy-{{snappy_version}} ./autogen.sh
+  sudo: yes
+  when: 'snappy_download.changed'
+  register: 'snappy'
+
+- name: Install | Ensure Snappy configured
+  shell: chdir={{ansible_cache_dir}}/snappy-{{snappy_version}} ./configure --prefix={{user_binaries}}/snappy
+  sudo: yes
+  when: 'snappy_download.changed'
+  register: 'snappy'
+
+- debug: "var=snappy"
+
+- name: Install | Ensure Snappy make'd
+  shell: chdir={{ansible_cache_dir}}/snappy-{{snappy_version}} make
+  sudo: yes
+  when: 'snappy_download.changed'
+
+- name: Install | Ensure Snappy installed
+  shell: chdir={{ansible_cache_dir}}/snappy-{{snappy_version}} make install creates={{user_binaries}}/snappy
+  sudo: yes
+  when: 'snappy_download.changed'
