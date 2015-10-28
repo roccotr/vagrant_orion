@@ -34,7 +34,7 @@
   register: 'thrift'
 
 - name: Install | Ensure Thrift configured
-  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure --with-boost=/opt/boost -with-libevent=/opt/libevent
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure --enable-static --prefix={{ user_binaries }}/thrift --with-boost=/opt/boost --with-libevent=/opt/libevent
   sudo: yes
   when: 'thrift_download.changed'
   register: 'thrift'
@@ -43,6 +43,8 @@
 
 - name: Install | Ensure Thrift make'd
   shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} make
+  #environment:
+  #      CPLUS_INCLUDE_PATH: /opt/libevent/include:/opt/libevent/include/event2
   sudo: yes
   when: 'thrift_download.changed'
 

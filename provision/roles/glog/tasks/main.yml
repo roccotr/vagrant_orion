@@ -1,7 +1,7 @@
 ---
 
 - name: Install | Ensure glog source downloaded
-  git: repo={{ glog_download_location }} dest={{ ansible_cache_dir }}/glog-{{ glog_version }} version={{ glog_version }}
+  git: repo={{ glog_download_location }} dest={{ ansible_cache_dir }}/glog-{{ glog_version }} version={{ glog_version }} force=yes
   register: 'glog_download'
   sudo: yes
 

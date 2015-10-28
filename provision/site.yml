@@ -17,15 +17,16 @@
     #- vars/dependencies.yml
   roles:
     - base
-    #- role: libevent
-    #- role: boost
+    - role: libevent
+    - role: boost
     - role: thrift
     - role: snappy
     - role: gflags
     - role: glog
     - role: protobuf
     - role: gperftools
-    #- role: orion
+    - role: re2
+    - role: orion
   tasks:
     - name: Setup proxy for Ansible tasks
       set_fact:

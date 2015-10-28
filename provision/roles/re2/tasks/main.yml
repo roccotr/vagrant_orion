@@ -1,0 +1,21 @@
+---
+
+- name: Install | Ensure re2 source downloaded
+  git: repo={{ re2_download_location }} dest={{ ansible_cache_dir }}/re2-{{ re2_version }} version={{ re2_version }}
+  register: 're2_download'
+  sudo: yes
+
+- name: Install | Ensure re2 make'd
+  shell: chdir={{ansible_cache_dir}}/re2-{{re2_version}} make
+  sudo: yes
+  when: 're2_download.changed'
+
+- name: Install | Ensure re2 make'd test
+  shell: chdir={{ansible_cache_dir}}/re2-{{re2_version}} make test
+  sudo: yes
+  when: 're2_download.changed'
+
+- name: Install | Ensure re2 installed
+  shell: chdir={{ansible_cache_dir}}/re2-{{re2_version}} make install
+  sudo: yes
+  when: 're2_download.changed'

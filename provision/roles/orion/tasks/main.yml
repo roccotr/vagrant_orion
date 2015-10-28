@@ -2,14 +2,20 @@
 
 - name: Install | Create Orion path
   file:
-   path: "{{ ansible_cache_dir }}/orion/build"
+   path: "{{ ansible_cache_dir }}/orion/static_lib"
    state: directory
    recurse: yes
 
-- name: Install | Copy Orion
-  copy:
-   src: /Users/sommoyogurt/workspace/orion_projects/orion/README.md
-   dest: "{{ ansible_cache_dir }}/orion"
+- name: Install | Copy dependencies static thrift lib
+  shell: chdir={{ user_binaries }}/thrift/lib cp -r *.[a,la] {{ ansible_cache_dir }}/orion/static_lib
+
+- name: Install | Copy dependencies static snappy lib
+  shell: chdir={{ user_binaries }}/snappy/lib cp -r *.a {{ ansible_cache_dir }}/orion/static_lib
 
 
-   enviroment: CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/opt/glog/include:/opt/gflags/include:/opt/boost/include:/opt/thrift/include:/opt/libevent/include:/opt/gperftools/include:/opt/protobuf/include
+- name: Install | Copy dependencies static gperftools lib
+  shell: chdir={{ user_binaries }}/gperftools/lib cp -r *.a {{ ansible_cache_dir }}/orion/static_lib
+
+
+#- name: Install | Copy Orion
+  #enviroment:           CPLUS_INCLUDE_PATH=/opt/glog/include:/opt/gflags/include:/opt/boost/include:/opt/thrift/include:/opt/gperftools/include:/opt/protobuf/include

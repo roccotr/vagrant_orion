@@ -13,10 +13,14 @@
       tags: [packages]
       with_items:
         - curl
+        - cmake
+        #- python-httplib2
         - vim
         - zip
         - unzip
         - python-dev
+        - automake
+        - libtool
         #- python-psycopg2
         #- apg
         #- mercurial
@@ -24,9 +28,9 @@
         - libssl-dev
         - libxslt1-dev
         - libxml2-dev
-        - libboost-dev
-        - libevent-2.0-5
-        - libevent-dev
+        #- libboost-dev
+        #- libevent-2.0-5
+        #- libevent-dev
 
     - name: Ensure that ansible_cache_dir directory exists
       file: path={{ ansible_cache_dir }} state=directory
