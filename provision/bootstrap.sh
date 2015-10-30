@@ -64,7 +64,7 @@ if [ ! -z "$bootstrap_proxy" ]; then
 fi
 
 # install ansible only if needed
-hash ansible 2>/dev/null || {
+#hash ansible 2>/dev/null || {
     # ubuntu trusty
     # apt-get -y -q update
     # apt-get install -y -q python-software-properties software-properties-common apt-transport-https
@@ -72,9 +72,9 @@ hash ansible 2>/dev/null || {
     # apt-get -y -q update
     # apt-get install -y -q ansible
     # debian jessie
-    apt-get install -y -q python-pip libxml2-dev python-dev sshpass
-    pip install markupsafe jinja2 ansible
-}
+    #apt-get install -y -q python-pip libxml2-dev python-dev sshpass
+    #pip install markupsafe jinja2 ansible
+#}
 ansible --version
 
 mkdir -p /etc/ansible

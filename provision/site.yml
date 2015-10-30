@@ -1,5 +1,5 @@
 ---
-- hosts: dockerhost
+- hosts: all
   vars:
     - http_proxy: "{{ lookup('env','http_proxy') }}"
     # Docker tools versions
@@ -16,6 +16,7 @@
   #vars_files:
     #- vars/dependencies.yml
   roles:
+    #- setup
     - base
     - role: libevent
     - role: boost
