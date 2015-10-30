@@ -12,7 +12,7 @@
   register: 'protobuf'
 
 - name: Install | Ensure protobuf configured
-  shell: chdir={{ansible_cache_dir}}/protobuf-{{protobuf_version}} ./configure --prefix={{user_binaries}}/protobuf
+  shell: chdir={{ansible_cache_dir}}/protobuf-{{protobuf_version}} ./configure
   sudo: yes
   when: 'protobuf_download.changed'
   register: 'protobuf'

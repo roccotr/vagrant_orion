@@ -12,7 +12,8 @@
    recurse: yes
 
 - name: Install | Ensure gflags cmake
-  shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build cmake -DCMAKE_INSTALL_PREFIX={{user_binaries}}/gflags ..
+  #shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build cmake -DCMAKE_INSTALL_PREFIX={{user_binaries}}/gflags ..
+  shell: chdir={{ansible_cache_dir}}/gflags-{{gflags_version}}/build cmake -DCMAKE_CXX_FLAGS:STRING=-fPIC ..
   sudo: yes
   when: 'gflags_download.changed'
   register: 'gflags'

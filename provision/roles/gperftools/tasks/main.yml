@@ -12,7 +12,7 @@
   register: 'gperftools'
 
 - name: Install | Ensure gperftools configured
-  shell: chdir={{ansible_cache_dir}}/gperftools-{{gperftools_version}} ./configure --prefix={{user_binaries}}/gperftools --enable-frame-pointers
+  shell: chdir={{ansible_cache_dir}}/gperftools-{{gperftools_version}} ./configure  --enable-frame-pointers
   sudo: yes
   when: 'gperftools_download.changed'
   register: 'gperftools'

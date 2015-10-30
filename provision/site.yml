@@ -26,7 +26,7 @@
     - role: protobuf
     - role: gperftools
     - role: re2
-    - role: orion
+    #- role: orion
   tasks:
     - name: Setup proxy for Ansible tasks
       set_fact:

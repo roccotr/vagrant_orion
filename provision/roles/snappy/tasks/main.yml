@@ -12,7 +12,7 @@
   register: 'snappy'
 
 - name: Install | Ensure Snappy configured
-  shell: chdir={{ansible_cache_dir}}/snappy-{{snappy_version}} ./configure --prefix={{user_binaries}}/snappy
+  shell: chdir={{ansible_cache_dir}}/snappy-{{snappy_version}} ./configure
   sudo: yes
   when: 'snappy_download.changed'
   register: 'snappy'

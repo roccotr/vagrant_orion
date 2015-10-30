@@ -34,7 +34,7 @@
   register: 'thrift'
 
 - name: Install | Ensure Thrift configured
-  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure --enable-static --prefix={{ user_binaries }}/thrift --with-boost=/opt/boost --with-libevent=/opt/libevent
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure
   sudo: yes
   when: 'thrift_download.changed'
   register: 'thrift'

@@ -6,7 +6,7 @@
   sudo: yes
 
 - name: Install | Ensure glog configured
-  shell: chdir={{ansible_cache_dir}}/glog-{{glog_version}} ./configure --prefix={{user_binaries}}/glog
+  shell: chdir={{ansible_cache_dir}}/glog-{{glog_version}} ./configure 
   sudo: yes
   when: 'glog_download.changed'
   register: 'glog'
