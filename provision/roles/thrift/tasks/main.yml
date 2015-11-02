@@ -1,26 +1,4 @@
 ---
-- name: Dependencies | Ensure packages for building Thrift installed
-  sudo: yes
-  apt: pkg={{ item }} state=installed
-  tags:
-    - packages
-    - thrift
-  with_items:
-    - make
-    #- libboost-dev
-    #- libboost-test-dev
-    #- libboost-program-options-dev
-    #- thrift-dev
-    - build-essential
-    - python-dev
-    - autoconf
-    - automake
-    - libtool
-    - flex
-    - bison
-    - pkg-config
-    - g++
-    - libssl-dev
 
 - name: Install | Ensure Thrift source downloaded
   git: repo={{ thrift_download_location }} dest={{ ansible_cache_dir }}/thrift-{{ thrift_version }} version={{ thrift_version }}
@@ -34,7 +12,7 @@
   register: 'thrift'
 
 - name: Install | Ensure Thrift configured
-  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure
+  shell: chdir={{ansible_cache_dir}}/thrift-{{thrift_version}} ./configure --with-lua=no
   sudo: yes
   when: 'thrift_download.changed'
   register: 'thrift'

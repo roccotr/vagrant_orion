@@ -21,7 +21,7 @@ eval set -- "$OPTS"
 
 bootstrap_user='vagrant'
 bootstrap_proxy=''
-bootstrap_basedir="$HOME"
+bootstrap_basedir="$HOME/sync"
 bootstrap_args=''
 
 while true
@@ -65,7 +65,7 @@ fi
 
 # install ansible only if needed
 #hash ansible 2>/dev/null || {
-    # ubuntu trusty
+    # ubuntu trust
     # apt-get -y -q update
     # apt-get install -y -q python-software-properties software-properties-common apt-transport-https
     # apt-add-repository ppa:ansible/ansible

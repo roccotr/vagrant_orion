@@ -21,15 +21,16 @@
   when: ansible_os_family == "RedHat"
 
 - name: Install | Ensure Boost source downloaded
-  git: repo={{ boost_download_location }} dest={{ ansible_cache_dir }}/boost-{{ boost_version }} version=boost-{{boost_version}} force=yes
+  git: repo={{ boost_download_location }} dest={{ ansible_cache_dir }}/boost-{{ boost_version }} version=boost-{{boost_version}} force=yes recursive=yes
   register: 'boost_download'
   sudo: yes
 
-- name: Install | Ensure Boost source submodule downloaded
-  shell: chdir={{ansible_cache_dir}}/boost-{{boost_version}} git submodule update --init --recursive --remote --no-fetch --depth=1
-  sudo: yes
-  when: 'boost_download.changed'
-  register: 'boost_configure'
+#- name: Install | Ensure Boost source submodule downloaded
+  #shell: chdir={{ansible_cache_dir}}/boost-{{boost_version}} git submodule update --init --recursive --remote --no-fetch --depth=1
+#  shell: chdir={{ansible_cache_dir}}/boost-{{boost_version}} git submodule update --init --recursive --remote --no-fetch
+#  sudo: yes
+#  when: 'boost_download.changed'
+#  register: 'boost_configure'
 
 - name: Install | Ensure Boost configured
   shell: chdir={{ansible_cache_dir}}/boost-{{ boost_version }} ./bootstrap.sh

@@ -14,51 +14,49 @@
       apt: pkg={{ item }} state=latest
       tags: [packages]
       with_items:
+        - g++
         - curl
         - cmake
-        #- python-httplib2
         - vim
         - zip
         - unzip
         - python-dev
-        - automake
-        - libtool
-        #- python-psycopg2
-        #- apg
-        #- mercurial
         - git
         - libssl-dev
         - libxslt1-dev
         - libxml2-dev
-        #- libboost-dev
-        #- libevent-2.0-5
-        #- libevent-dev
+        - autoconf
+        - automake
+        - libtool
+        - flex
+        - bison
+        - pkg-config
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: install basic packages
       sudo: yes
-      yum: pkg={{ item }} state=latest
+      yum: pkg={{ item }} state=latest update_cache=yes
       tags: [packages]
       with_items:
+        - gcc
+        - gcc-c++
         - curl
         - cmake
-        #- python-httplib2
         - vim
         - zip
+        - bzip2
         - unzip
-        - python-dev
+        - git
+        - python-devel
+        - openssl-devel
+        - libxslt-devel
+        - libxml2-devel
+        - autoconf
         - automake
         - libtool
-        #- python-psycopg2
-        #- apg
-        #- mercurial
-        - git
-        - libssl-dev
-        - libxslt1-dev
-        - libxml2-dev
-        #- libboost-dev
-        #- libevent-2.0-5
-        #- libevent-dev
+        - flex
+        - bison
+        - pkgconfig
       when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
     - name: Ensure that ansible_cache_dir directory exists

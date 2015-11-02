@@ -53,37 +53,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #c.vm.network "private_network", ip: "192.168.100.5"
     c.vm.box = "centos/7"
     c.vm.provision "shell" do |s|
-      s.inline = "yum install -y epel-release; yum install -y ansible"
+      s.inline = "yum sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm; yum install -y epel-release; yum install -y ansible"
       s.privileged = true
     end
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provision/site.yml"
+  #config.vm.provision "ansible" do |ansible|
+  #  ansible.playbook = "provision/site.yml"
     #ansible.inventory_path = CLUSTER_HOSTS
     #ansible.limit = "all"
+  #end
+
+  config.vm.provision :shell do |shell|
+    proxy_option = v_config['http_proxy'].nil? || v_config['http_proxy'].empty? ? '' : "--proxy #{v_config['http_proxy']}"
+    bootstrap_opts = "--basedir /home/vagrant/sync --user vagrant #{proxy_option}"
+    shell.inline = "/home/vagrant/sync/provision/bootstrap.sh #{bootstrap_opts}"
   end
-
-  #config.vm.provision :ansible do |ansible|
-   #ansible.inventory_path = CLUSTER_HOSTS
-   # Extra Ansible variables can be defined here
-   #ansible.extra_vars = {
-    #couchbase_server_ram: "1190",
-     # Example variable overrides which will get passed in the same as
-     # `ansible-playbook --extra-vars`
-     # couchbase_server_local_package: true,
-     # couchbase_server_debian_ee_version: "",
-     # couchbase_server_debian_ee_package: "",
-     # couchbase_server_debian_ee_url: "",
-     # couchbase_server_debian_ee_sha256: "",
-   #}
-   #ansible.playbook = ANSIBLE_PLAYBOOK
-   #ansible.limit = "all"
-  #end
-
-  #config.vm.provision :shell do |shell|
-    #proxy_option = v_config['http_proxy'].nil? || v_config['http_proxy'].empty? ? '' : "--proxy #{v_config['http_proxy']}"
-    #bootstrap_opts = "--basedir /vagrant --user vagrant #{proxy_option}"
-    #shell.inline = "/vagrant/provision/bootstrap.sh #{bootstrap_opts}"
-  #end
 end
