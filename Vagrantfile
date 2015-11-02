@@ -53,20 +53,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #c.vm.network "private_network", ip: "192.168.100.5"
     c.vm.box = "centos/7"
     c.vm.provision "shell" do |s|
-      s.inline = "yum sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm; yum install -y epel-release; yum install -y ansible"
+      s.inline = "sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm; sudo yum install -y epel-release; sudo yum install -y ansible"
       s.privileged = true
+    end
+    c.vm.provision "shell" do |s|
+      proxy_option = v_config['http_proxy'].nil? || v_config['http_proxy'].empty? ? '' : "--proxy #{v_config['http_proxy']}"
+      bootstrap_opts = "--basedir /home/vagrant/sync --user vagrant #{proxy_option}"
+      s.inline = "/home/vagrant/sync/provision/bootstrap.sh #{bootstrap_opts}"
     end
   end
 
-  #config.vm.provision "ansible" do |ansible|
-  #  ansible.playbook = "provision/site.yml"
-    #ansible.inventory_path = CLUSTER_HOSTS
-    #ansible.limit = "all"
-  #end
-
-  config.vm.provision :shell do |shell|
-    proxy_option = v_config['http_proxy'].nil? || v_config['http_proxy'].empty? ? '' : "--proxy #{v_config['http_proxy']}"
-    bootstrap_opts = "--basedir /home/vagrant/sync --user vagrant #{proxy_option}"
-    shell.inline = "/home/vagrant/sync/provision/bootstrap.sh #{bootstrap_opts}"
-  end
 end
