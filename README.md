@@ -1,6 +1,6 @@
-# Orion on Debian Jessie Docker host
+# Orion on Multiple OS host
 
-Setup for a Debian Jessie Docker host machine.
+Setup for a Multiple OS host machine.
 
 Try using Vagrant or run
 
