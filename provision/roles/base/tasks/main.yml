@@ -40,6 +40,9 @@
       with_items:
         - gcc
         - gcc-c++
+        - libstdc++-devel
+        - libstdc++
+        - libstdc++-static
         - curl
         - cmake
         - vim

@@ -1,0 +1,40 @@
+---
+
+- name: Install | Ensure liblfds source downloaded
+  git: repo={{ liblfds_download_location }} dest={{ ansible_cache_dir }}/liblfds-{{ liblfds_version }}
+  register: 'liblfds_download'
+  sudo: yes
+
+- name: Ensure that liblfsd obj directory exists
+  file: path={{ ansible_cache_dir }}/liblfds-{{ liblfds_version }}/{{ liblfds_dir }}/obj state=directory
+  sudo: yes
+
+- name: Ensure that liblfsd bin directory exists
+  file: path={{ ansible_cache_dir }}/liblfds-{{ liblfds_version }}/{{ liblfds_dir }}/bin state=directory
+  sudo: yes
+
+- name: Install | Ensure liblfds configured
+  shell: chdir={{ ansible_cache_dir }}/liblfds-{{ liblfds_version }}/{{ liblfds_dir }} make -f makefile.linux
+  sudo: yes
+  when: 'liblfds_download.changed'
+  register: 'liblfds_configure'
+
+- debug: "var=liblfds_configure"
+
+- name: Ensure that liblfsd include directory exists
+  file: path={{ user_binaries }}/liblfds/include state=directory
+  sudo: yes
+
+- name: Ensure that liblfsd lib directory exists
+  file: path={{ user_binaries }}/liblfds/lib state=directory
+  sudo: yes
+
+- name: Install | Ensure liblfds installed
+  shell: chdir={{ ansible_cache_dir }}/liblfds-{{ liblfds_version }}/{{ liblfds_dir }}/bin cp -r ./* {{ user_binaries }}/liblfds/lib/.
+  when: 'liblfds_download.changed'
+  sudo: yes
+
+- name: Install | Ensure liblfds installed
+  shell: chdir={{ ansible_cache_dir }}/liblfds-{{ liblfds_version }}/{{ liblfds_dir }}/inc cp -r ./* {{ user_binaries }}/liblfds/include
+  when: 'liblfds_download.changed'
+  sudo: yes

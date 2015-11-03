@@ -1,0 +1,3 @@
+---
+
+liblfds_download_location: "https://github.com/liblfds/{{ liblfds_version }}.git"

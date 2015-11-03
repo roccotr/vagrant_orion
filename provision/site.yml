@@ -27,4 +27,5 @@
     - role: protobuf
     - role: gperftools
     - role: re2
-    #- role: orion
+    - role: liblfds
+    - role: gtest
